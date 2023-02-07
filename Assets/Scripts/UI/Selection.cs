@@ -1,0 +1,38 @@
+using UnityEngine.UI;
+using UnityEngine;
+
+public class Selection : MonoBehaviour
+{
+    [SerializeField] private RectTransform[] options;
+    private RectTransform rect;
+    private int currentPossition;
+    private void Awake()
+    {
+        rect = GetComponent<RectTransform>();
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+            ChangePosition(-1);
+        if (Input.GetKeyDown(KeyCode.S))
+            ChangePosition(1);
+        if (Input.GetKeyDown(KeyCode.E))
+            Interact();
+    }
+    private void ChangePosition(int _change)
+    {
+        currentPossition += _change;
+
+        if (currentPossition < 0)
+            currentPossition = options.Length - 1;
+        else if (currentPossition > options.Length - 1)
+            currentPossition = 0;
+
+        rect.position = new Vector3(rect.position.x, options[currentPossition].position.y, 0);
+
+    }
+    private void Interact()
+    {
+        options[currentPossition].GetComponent<Button>().onClick.Invoke();
+    }
+}
